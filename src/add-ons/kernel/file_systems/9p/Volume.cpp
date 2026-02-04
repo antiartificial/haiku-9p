@@ -11,6 +11,7 @@
 #include <string.h>
 #include <new>
 
+#include <StorageDefs.h>
 #include <KernelExport.h>
 #include <NodeMonitor.h>
 
@@ -61,7 +62,7 @@ Volume::Mount(const char* device, uint32 flags, const char* args,
 	if (status != B_OK)
 		return status;
 
-	fReadOnly = (flags & B_MOUNT_READ_ONLY) != 0;
+	fReadOnly = (flags & 1) != 0;  // B_MOUNT_READ_ONLY
 
 	// Find virtio-9p transport
 	status = _FindTransport();
@@ -281,7 +282,7 @@ Volume::_FindTransport()
 	TRACE("looking for transport with tag '%s'\n", fMountTag);
 
 	// Find transport in the registry
-	fTransport = (Virtio9PTransport*)virtio_9p_find_transport(fMountTag);
+	fTransport = virtio_9p_find_transport(fMountTag);
 	if (fTransport == NULL) {
 		ERROR("no virtio-9p device found with tag '%s'\n", fMountTag);
 		ERROR("available tags can be seen in syslog after boot\n");

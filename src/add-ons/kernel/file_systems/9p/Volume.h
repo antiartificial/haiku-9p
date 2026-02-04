@@ -14,7 +14,7 @@
 #include "9p_client.h"
 
 class Inode;
-class Virtio9PTransport;
+class P9Transport;
 
 
 class Volume {
@@ -55,7 +55,7 @@ private:
 
 	fs_volume*			fFSVolume;
 	P9Client			fClient;
-	Virtio9PTransport*	fTransport;
+	P9Transport*		fTransport;
 
 	uint32				fRootFid;
 	Inode*				fRootInode;
