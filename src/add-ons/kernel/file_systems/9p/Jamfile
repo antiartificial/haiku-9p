@@ -16,7 +16,7 @@ KernelAddon 9p :
 ;
 
 # Link against virtio module
-Includes [ FGristFiles 9p_client.cpp virtio_9p.cpp ]
+Includes [ FGristFiles 9p_client.cpp virtio_9p.cpp virtio_9p_device.cpp ]
 	: $(HAIKU_TOP)/headers/private/drivers/virtio.h ;
 
 SEARCH on [ FGristFiles virtio.h ]

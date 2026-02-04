@@ -6,10 +6,10 @@
  */
 
 #include "virtio_9p_device.h"
-#include "virtio_9p.h"
 
 #include <string.h>
 #include <lock.h>
+#include <KernelExport.h>
 
 
 struct TransportEntry {
