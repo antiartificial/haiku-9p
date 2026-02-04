@@ -261,15 +261,26 @@ P9Buffer::ReadData(void* buffer, uint32 len)
 status_t
 P9Buffer::ReadQid(P9Qid& qid)
 {
-	status_t status = ReadUint8(qid.type);
+	uint8 type;
+	uint32 version;
+	uint64 path;
+
+	status_t status = ReadUint8(type);
 	if (status != B_OK)
 		return status;
 
-	status = ReadUint32(qid.version);
+	status = ReadUint32(version);
 	if (status != B_OK)
 		return status;
 
-	return ReadUint64(qid.path);
+	status = ReadUint64(path);
+	if (status != B_OK)
+		return status;
+
+	qid.type = type;
+	qid.version = version;
+	qid.path = path;
+	return B_OK;
 }
 
 
