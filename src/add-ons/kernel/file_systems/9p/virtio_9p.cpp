@@ -6,6 +6,7 @@
  */
 
 #include "virtio_9p.h"
+#include "virtio_9p_device.h"
 
 #include <stdlib.h>
 #include <string.h>
@@ -178,6 +179,11 @@ Virtio9PTransport::Init()
 		return fTransferDone;
 	}
 
+	// Register transport so filesystem can find it
+	if (fMountTag != NULL) {
+		virtio_9p_register_transport(this, fMountTag);
+	}
+
 	fInitialized = true;
 	return B_OK;
 }
@@ -188,6 +194,9 @@ Virtio9PTransport::Uninit()
 {
 	if (!fInitialized)
 		return;
+
+	// Unregister from transport registry
+	virtio_9p_unregister_transport(this);
 
 	if (fTransferDone >= 0) {
 		delete_sem(fTransferDone);

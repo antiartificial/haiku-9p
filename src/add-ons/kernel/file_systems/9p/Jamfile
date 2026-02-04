@@ -10,6 +10,7 @@ KernelAddon 9p :
 	9p_message.cpp
 	9p_client.cpp
 	virtio_9p.cpp
+	virtio_9p_device.cpp
 	Volume.cpp
 	Inode.cpp
 ;

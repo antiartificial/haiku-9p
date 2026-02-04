@@ -16,6 +16,7 @@
 
 #include "Inode.h"
 #include "virtio_9p.h"
+#include "virtio_9p_device.h"
 
 
 //#define TRACE_9P_VOLUME
@@ -273,20 +274,21 @@ Volume::_ParseArgs(const char* args)
 status_t
 Volume::_FindTransport()
 {
-	// TODO: Implement proper device enumeration
-	// For now, we expect the transport to be passed in or found by tag
-	// This is a placeholder - in a real implementation we would iterate
-	// through virtio devices looking for a 9P device with matching tag
-
 	if (fMountTag == NULL) {
-		ERROR("no mount tag specified\n");
+		ERROR("no mount tag specified (use -o tag=<name>)\n");
 		return B_BAD_VALUE;
 	}
 
-	// The transport should be set up by the device manager
-	// For testing, create a dummy transport lookup
-	// In production, this would use device_manager to find the transport
+	TRACE("looking for transport with tag '%s'\n", fMountTag);
 
-	ERROR("transport lookup not yet implemented\n");
-	return B_NOT_SUPPORTED;
+	// Find transport in the registry
+	fTransport = (Virtio9PTransport*)virtio_9p_find_transport(fMountTag);
+	if (fTransport == NULL) {
+		ERROR("no virtio-9p device found with tag '%s'\n", fMountTag);
+		ERROR("available tags can be seen in syslog after boot\n");
+		return B_DEVICE_NOT_FOUND;
+	}
+
+	TRACE("found transport for tag '%s'\n", fMountTag);
+	return B_OK;
 }
