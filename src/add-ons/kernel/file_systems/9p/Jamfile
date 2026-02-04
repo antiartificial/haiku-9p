@@ -1,0 +1,22 @@
+SubDir HAIKU_TOP src add-ons kernel file_systems 9p ;
+
+UsePrivateKernelHeaders ;
+UsePrivateHeaders drivers ;
+UsePrivateHeaders shared ;
+
+# Define the kernel add-on
+KernelAddon 9p :
+	kernel_interface.cpp
+	9p_message.cpp
+	9p_client.cpp
+	virtio_9p.cpp
+	Volume.cpp
+	Inode.cpp
+;
+
+# Link against virtio module
+Includes [ FGristFiles 9p_client.cpp virtio_9p.cpp ]
+	: $(HAIKU_TOP)/headers/private/drivers/virtio.h ;
+
+SEARCH on [ FGristFiles virtio.h ]
+	= [ FDirName $(HAIKU_TOP) headers private drivers ] ;
