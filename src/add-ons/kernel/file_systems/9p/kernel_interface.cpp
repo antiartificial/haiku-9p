@@ -175,10 +175,13 @@ fs_get_vnode(fs_volume* fsVolume, ino_t id, fs_vnode* vnode, int* _type,
 {
 	TRACE("get_vnode(%lld)\n", id);
 
-	Volume* volume = (Volume*)fsVolume->private_volume;
-
 	// Walk from root to find this inode
 	// For now, we return an error - inodes are created on lookup
+	(void)fsVolume;
+	(void)vnode;
+	(void)_type;
+	(void)_flags;
+	(void)reenter;
 	return B_ENTRY_NOT_FOUND;
 }
 
@@ -437,7 +440,7 @@ fs_create_symlink(fs_volume* fsVolume, fs_vnode* dir, const char* name,
 
 
 static status_t
-fs_fsync(fs_volume* fsVolume, fs_vnode* vnode)
+fs_fsync(fs_volume* fsVolume, fs_vnode* vnode, bool dataSync)
 {
 	Inode* inode = (Inode*)vnode->private_node;
 	return inode->Sync();
